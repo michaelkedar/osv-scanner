@@ -17,6 +17,7 @@ type NpmLockPackage struct {
 	Version      string            `json:"version"`
 	Resolved     string            `json:"resolved"`
 	Dependencies map[string]string `json:"dependencies"`
+	Dev          bool              `json:"dev"`
 }
 
 type NpmLockfile struct {
@@ -108,7 +109,7 @@ func parseNpmLockPackages(packages map[string]NpmLockPackage) map[string]Package
 	details := map[string]PackageDetails{}
 
 	for namePath, detail := range packages {
-		if namePath == "" {
+		if namePath == "" || detail.Dev {
 			continue
 		}
 		finalName := extractNpmPackageName(namePath)

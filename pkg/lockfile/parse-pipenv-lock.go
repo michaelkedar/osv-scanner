@@ -35,7 +35,7 @@ func ParsePipenvLock(pathToLockfile string) ([]PackageDetails, error) {
 	details := make(map[string]PackageDetails)
 
 	addPkgDetails(details, parsedLockfile.Packages)
-	addPkgDetails(details, parsedLockfile.PackagesDev)
+	// addPkgDetails(details, parsedLockfile.PackagesDev)
 
 	return pkgDetailsMapToSlice(details), nil
 }
