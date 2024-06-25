@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Disables version updates, but security updates are still created
+    open-pull-requests-limit: 0
+  - package-ecosystem: "bundler"
+    directory: "/docs"
+    schedule:
+      interval: "daily"
+    # Disables version updates, but security updates are still created
+    open-pull-requests-limit: 0
