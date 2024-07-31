@@ -1,4 +1,219 @@
 
+[TestComputeOverridePatches/maven-vulnerable-dependency-with-classifier - 1]
+[
+  {
+    "Patch": {
+      "Deps": [
+        {
+          "Pkg": {
+            "System": 6,
+            "Name": "org.yaml:snakeyaml"
+          },
+          "Type": "reg|MavenClassifier=\"android\"|Selector=\"\"",
+          "OrigRequire": "",
+          "NewRequire": "2.0",
+          "OrigResolved": "1.23",
+          "NewResolved": "2.0"
+        }
+      ],
+      "EcosystemSpecific": null
+    },
+    "RemovedVulns": [
+      {
+        "ID": "GHSA-3mc7-4q67-w48m",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-98wm-3w3q-mw94",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-9w3m-gqgf-c4p9",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-c4r9-r8fh-9vj2",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-hhhw-99gj-p3c3",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-mjmj-j48q-9wg2",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-rvwf-54qp-4r6v",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-w37g-rhq8-7m4j",
+        "AffectedNodes": [
+          3
+        ]
+      }
+    ],
+    "AddedVulns": []
+  },
+  {
+    "Patch": {
+      "Deps": [
+        {
+          "Pkg": {
+            "System": 6,
+            "Name": "org.yaml:snakeyaml"
+          },
+          "Type": "reg|MavenClassifier=\"android\"|Selector=\"\"",
+          "OrigRequire": "",
+          "NewRequire": "1.32",
+          "OrigResolved": "1.23",
+          "NewResolved": "1.32"
+        }
+      ],
+      "EcosystemSpecific": null
+    },
+    "RemovedVulns": [
+      {
+        "ID": "GHSA-3mc7-4q67-w48m",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-98wm-3w3q-mw94",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-9w3m-gqgf-c4p9",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-c4r9-r8fh-9vj2",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-hhhw-99gj-p3c3",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-rvwf-54qp-4r6v",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-w37g-rhq8-7m4j",
+        "AffectedNodes": [
+          3
+        ]
+      }
+    ],
+    "AddedVulns": []
+  },
+  {
+    "Patch": {
+      "Deps": [
+        {
+          "Pkg": {
+            "System": 6,
+            "Name": "org.yaml:snakeyaml"
+          },
+          "Type": "reg|MavenClassifier=\"android\"|Selector=\"\"",
+          "OrigRequire": "",
+          "NewRequire": "1.31",
+          "OrigResolved": "1.23",
+          "NewResolved": "1.31"
+        }
+      ],
+      "EcosystemSpecific": null
+    },
+    "RemovedVulns": [
+      {
+        "ID": "GHSA-3mc7-4q67-w48m",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-98wm-3w3q-mw94",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-c4r9-r8fh-9vj2",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-hhhw-99gj-p3c3",
+        "AffectedNodes": [
+          3
+        ]
+      },
+      {
+        "ID": "GHSA-rvwf-54qp-4r6v",
+        "AffectedNodes": [
+          3
+        ]
+      }
+    ],
+    "AddedVulns": []
+  },
+  {
+    "Patch": {
+      "Deps": [
+        {
+          "Pkg": {
+            "System": 6,
+            "Name": "org.yaml:snakeyaml"
+          },
+          "Type": "reg|MavenClassifier=\"android\"|Selector=\"\"",
+          "OrigRequire": "",
+          "NewRequire": "1.26",
+          "OrigResolved": "1.23",
+          "NewResolved": "1.26"
+        }
+      ],
+      "EcosystemSpecific": null
+    },
+    "RemovedVulns": [
+      {
+        "ID": "GHSA-rvwf-54qp-4r6v",
+        "AffectedNodes": [
+          3
+        ]
+      }
+    ],
+    "AddedVulns": []
+  }
+]
+---
+
 [TestComputeOverridePatches/maven-zeppelin-server - 1]
 [
   {
@@ -9,7 +224,7 @@
             "System": 6,
             "Name": "io.atomix:atomix"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"org.apache.commons:commons-lang3\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "3.1.6",
           "OrigResolved": "3.0.0-rc5",
@@ -79,7 +294,7 @@
             "System": 6,
             "Name": "org.apache.pdfbox:pdfbox"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.0.24",
           "OrigResolved": "2.0.16",
@@ -124,7 +339,7 @@
             "System": 6,
             "Name": "xerces:xercesImpl"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.12.2",
           "OrigResolved": "2.11.0",
@@ -169,7 +384,7 @@
             "System": 6,
             "Name": "io.atomix:atomix"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"org.apache.commons:commons-lang3\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "3.1.6",
           "OrigResolved": "3.0.0-rc5",
@@ -180,7 +395,7 @@
             "System": 6,
             "Name": "io.github.classgraph:classgraph"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "4.8.112",
           "OrigResolved": "4.2.3",
@@ -243,7 +458,7 @@
             "System": 6,
             "Name": "com.google.guava:guava"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "32.0.0-android",
           "OrigResolved": "22.0",
@@ -282,7 +497,7 @@
             "System": 6,
             "Name": "xerces:xercesImpl"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.12.1",
           "OrigResolved": "2.11.0",
@@ -321,7 +536,7 @@
             "System": 6,
             "Name": "com.fasterxml.jackson.core:jackson-databind"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.12.7.1",
           "OrigResolved": "2.12.6.1",
@@ -354,7 +569,7 @@
             "System": 6,
             "Name": "io.netty:netty-handler"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "4.1.94.Final",
           "OrigResolved": "4.1.27.Final",
@@ -387,7 +602,7 @@
             "System": 6,
             "Name": "org.apache.commons:commons-compress"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "1.26.0",
           "OrigResolved": "1.21",
@@ -420,7 +635,7 @@
             "System": 6,
             "Name": "org.apache.commons:commons-configuration2"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"commons-logging:commons-logging\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.10.1",
           "OrigResolved": "2.8.0",
@@ -453,7 +668,7 @@
             "System": 6,
             "Name": "org.apache.mina:mina-core"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.0.22",
           "OrigResolved": "2.0.7",
@@ -486,7 +701,7 @@
             "System": 6,
             "Name": "org.apache.pdfbox:pdfbox"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.0.23",
           "OrigResolved": "2.0.16",
@@ -519,7 +734,7 @@
             "System": 6,
             "Name": "org.apache.shiro:shiro-web"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "1.13.0",
           "OrigResolved": "1.10.0",
@@ -552,7 +767,7 @@
             "System": 6,
             "Name": "org.eclipse.jgit:org.eclipse.jgit"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "5.13.3.202401111512-r",
           "OrigResolved": "4.5.4.201711221230-r",
@@ -585,7 +800,7 @@
             "System": 6,
             "Name": "xerces:xercesImpl"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.12.0",
           "OrigResolved": "2.11.0",
@@ -618,7 +833,7 @@
             "System": 6,
             "Name": "commons-net:commons-net"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "3.9.0",
           "OrigResolved": "3.6",
@@ -629,7 +844,7 @@
             "System": 6,
             "Name": "net.sourceforge.htmlunit:htmlunit"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.37.0",
           "OrigResolved": "2.18",
@@ -640,7 +855,7 @@
             "System": 6,
             "Name": "net.sourceforge.htmlunit:neko-htmlunit"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.61.0",
           "OrigResolved": "2.37.0",
@@ -691,7 +906,7 @@
             "System": 6,
             "Name": "net.sourceforge.htmlunit:htmlunit"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.37.0",
           "OrigResolved": "2.18",
@@ -743,7 +958,7 @@
             "System": 6,
             "Name": "com.google.guava:guava"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "24.1.1-android",
           "OrigResolved": "22.0",
@@ -770,7 +985,7 @@
             "System": 6,
             "Name": "com.jcraft:jsch"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "0.1.54",
           "OrigResolved": "0.1.53",
@@ -797,7 +1012,7 @@
             "System": 6,
             "Name": "com.nimbusds:nimbus-jose-jwt"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "9.37.2",
           "OrigResolved": "9.13",
@@ -824,7 +1039,7 @@
             "System": 6,
             "Name": "io.netty:netty"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "3.9.8.Final",
           "OrigResolved": "3.5.2.Final",
@@ -851,7 +1066,7 @@
             "System": 6,
             "Name": "io.netty:netty-handler"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "4.1.46.Final",
           "OrigResolved": "4.1.27.Final",
@@ -878,7 +1093,7 @@
             "System": 6,
             "Name": "org.apache.directory.api:api-ldap-model"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "1.0.0-M31",
           "OrigResolved": "1.0.0-M20",
@@ -905,7 +1120,7 @@
             "System": 6,
             "Name": "org.apache.mina:mina-core"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.0.21",
           "OrigResolved": "2.0.7",
@@ -932,7 +1147,7 @@
             "System": 6,
             "Name": "org.apache.shiro:shiro-core"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"commons-beanutils:commons-beanutils\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "1.13.0",
           "OrigResolved": "1.10.0",
@@ -959,7 +1174,7 @@
             "System": 6,
             "Name": "org.apache.shiro:shiro-web"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "1.12.0",
           "OrigResolved": "1.10.0",
@@ -986,7 +1201,7 @@
             "System": 6,
             "Name": "org.glassfish.jersey.core:jersey-common"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.34",
           "OrigResolved": "2.30",
@@ -1013,7 +1228,7 @@
             "System": 6,
             "Name": "xalan:xalan"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"xerces:xercesImpl\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "2.7.3",
           "OrigResolved": "2.7.2",
@@ -1040,7 +1255,7 @@
             "System": 6,
             "Name": "org.apache.thrift:libthrift"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"commons-logging:commons-logging\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "0.14.0",
           "OrigResolved": "0.13.0",
@@ -1051,7 +1266,7 @@
             "System": 6,
             "Name": "org.apache.tomcat.embed:tomcat-embed-core"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "8.5.99",
           "OrigResolved": "8.5.46",
@@ -1078,7 +1293,7 @@
             "System": 6,
             "Name": "io.netty:netty-codec"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "4.1.68.Final",
           "OrigResolved": "4.1.27.Final",
@@ -1098,7 +1313,7 @@
             "System": 6,
             "Name": "io.netty:netty-handler"
           },
-          "Type": {},
+          "Type": "reg|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "4.1.45.Final",
           "OrigResolved": "4.1.27.Final",
@@ -1118,7 +1333,7 @@
             "System": 6,
             "Name": "org.apache.thrift:libthrift"
           },
-          "Type": {},
+          "Type": "reg|MavenExclusions=\"commons-logging:commons-logging\"|Selector=\"\"",
           "OrigRequire": "",
           "NewRequire": "0.14.0",
           "OrigResolved": "0.13.0",
@@ -1241,7 +1456,7 @@
             "System": 3,
             "Name": "mocha"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^5.2.0",
           "NewRequire": "^9.2.2",
           "OrigResolved": "5.2.0",
@@ -1280,7 +1495,7 @@
             "System": 3,
             "Name": "mocha"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^5.2.0",
           "NewRequire": "^8.4.0",
           "OrigResolved": "5.2.0",
@@ -1320,7 +1535,7 @@
             "System": 3,
             "Name": "@google-cloud/cloudbuild"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^2.6.0",
           "NewRequire": "^4.4.0",
           "OrigResolved": "2.6.0",
@@ -1347,7 +1562,7 @@
             "System": 3,
             "Name": "autoprefixer"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^9.3.0",
           "NewRequire": "^10.4.19",
           "OrigResolved": "9.8.8",
@@ -1374,7 +1589,7 @@
             "System": 3,
             "Name": "google-closure-library"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^20190909.0.0",
           "NewRequire": "^20200315.0.0",
           "OrigResolved": "20190909.0.0",
@@ -1401,7 +1616,7 @@
             "System": 3,
             "Name": "terser"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^3.10.11",
           "NewRequire": "^4.8.1",
           "OrigResolved": "3.17.0",
@@ -1428,7 +1643,7 @@
             "System": 3,
             "Name": "yargs"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^12.0.2",
           "NewRequire": "^13.3.2",
           "OrigResolved": "12.0.5",
@@ -1455,7 +1670,7 @@
             "System": 3,
             "Name": "mocha"
           },
-          "Type": {},
+          "Type": "reg",
           "OrigRequire": "^5.2.0",
           "NewRequire": "^6.2.3",
           "OrigResolved": "5.2.0",

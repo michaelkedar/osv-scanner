@@ -17,6 +17,7 @@ import (
 
 type overridePatch struct {
 	resolve.PackageKey
+	dep.Type    // Part of package identity e.g. Maven artifact type & classifier
 	OrigVersion string
 	NewVersion  string
 }
@@ -79,7 +80,7 @@ func ComputeOverridePatches(ctx context.Context, cl client.ResolutionClient, res
 		for i, p := range res.patches {
 			diff.Deps[i] = manifest.DependencyPatch{
 				Pkg:          p.PackageKey,
-				Type:         dep.Type{},
+				Type:         p.Type,
 				OrigRequire:  "", // Using empty original to signal this is an override patch
 				OrigResolved: p.OrigVersion,
 				NewRequire:   p.NewVersion,
@@ -117,41 +118,42 @@ var errOverrideImpossible = errors.New("cannot fix vulns by overrides")
 func overridePatchVulns(ctx context.Context, cl client.ResolutionClient, result *resolution.ResolutionResult, vulnIDs []string, opts RemediationOptions) (*resolution.ResolutionResult, []overridePatch, error) {
 	var effectivePatches []overridePatch
 	for {
-		// Find the relevant vulns affecting each version key.
-		vkVulns := make(map[resolve.VersionKey][]*resolution.ResolutionVuln)
+		// Find the relevant vulns affecting each dependency graph node.
+		nodeVulns := make(map[resolve.NodeID][]*resolution.ResolutionVuln)
 		for i, v := range result.Vulns {
 			if !slices.Contains(vulnIDs, v.Vulnerability.ID) {
 				continue
 			}
-			// Keep track of VersionKeys we've seen for this vuln to avoid duplicates.
-			// Usually, there will only be one VersionKey per vuln, but some vulns affect multiple packages.
-			seenVKs := make(map[resolve.VersionKey]struct{})
+			// Keep track of nodes we've seen for this vuln to avoid duplicates.
+			// Usually, there will only be one node per vuln, but some vulns affect multiple packages.
+			seenNodes := make(map[resolve.NodeID]struct{})
 			// Use the DependencyChains to find all the affected nodes.
 			for _, c := range v.ProblemChains {
-				vk, _ := c.End()
-				if _, seen := seenVKs[vk]; !seen {
-					vkVulns[vk] = append(vkVulns[vk], &result.Vulns[i])
-					seenVKs[vk] = struct{}{}
+				nID := c.Edges[0].To
+				if _, seen := seenNodes[nID]; !seen {
+					nodeVulns[nID] = append(nodeVulns[nID], &result.Vulns[i])
+					seenNodes[nID] = struct{}{}
 				}
 			}
 			for _, c := range v.NonProblemChains {
-				vk, _ := c.End()
-				if _, seen := seenVKs[vk]; !seen {
-					vkVulns[vk] = append(vkVulns[vk], &result.Vulns[i])
-					seenVKs[vk] = struct{}{}
+				nID := c.Edges[0].To
+				if _, seen := seenNodes[nID]; !seen {
+					nodeVulns[nID] = append(nodeVulns[nID], &result.Vulns[i])
+					seenNodes[nID] = struct{}{}
 				}
 			}
 		}
 
-		if len(vkVulns) == 0 {
+		if len(nodeVulns) == 0 {
 			// All vulns have been fixed.
 			break
 		}
 
-		newPatches := make([]overridePatch, 0, len(vkVulns))
+		newPatches := make([]overridePatch, 0, len(nodeVulns))
 
-		// For each VersionKey, try fix as many of the vulns affecting it as possible.
-		for vk, vulnerabilities := range vkVulns {
+		// For each node, try fix as many of the vulns affecting it as possible.
+		for nID, vulnerabilities := range nodeVulns {
+			vk := result.Graph.Nodes[nID].Version
 			// Consider vulns affecting packages we don't want to change unfixable
 			if slices.Contains(opts.AvoidPkgs, vk.Name) {
 				continue
@@ -191,9 +193,20 @@ func overridePatchVulns(ctx context.Context, cl client.ResolutionClient, result 
 			}
 
 			if bestCount < len(vulnerabilities) {
+				// dep.Type can contain important identifying information of the package.
+				// Grab a dep.Type from one of the edges of this node.
+				// TODO: Make sure only relevant type info (type, classifier) is included.
+				idx := slices.IndexFunc(result.Graph.Edges, func(e resolve.Edge) bool {
+					return e.To == nID
+				})
+				if idx < 0 { // should be impossible
+					panic("node ID from dependency chain not connected to graph")
+				}
+
 				// Found a version that fixes some vulns.
 				newPatches = append(newPatches, overridePatch{
 					PackageKey:  vk.PackageKey,
+					Type:        result.Graph.Edges[idx].Type.Clone(),
 					OrigVersion: vk.Version,
 					NewVersion:  bestVK.Version,
 				})
@@ -219,7 +232,18 @@ func overridePatchVulns(ctx context.Context, cl client.ResolutionClient, result 
 
 		// If the patch applies to a package that was already patched before, update the effective patch.
 		for _, p := range newPatches {
-			idx := slices.IndexFunc(effectivePatches, func(op overridePatch) bool { return op.PackageKey == p.PackageKey && op.NewVersion == p.OrigVersion })
+			pKey := manifest.MakeRequirementKey(resolve.RequirementVersion{
+				VersionKey: resolve.VersionKey{PackageKey: p.PackageKey},
+				Type:       p.Type,
+			})
+			idx := slices.IndexFunc(effectivePatches, func(op overridePatch) bool {
+				opKey := manifest.MakeRequirementKey(resolve.RequirementVersion{
+					VersionKey: resolve.VersionKey{PackageKey: op.PackageKey},
+					Type:       op.Type,
+				})
+
+				return opKey == pKey && op.NewVersion == p.OrigVersion
+			})
 			if idx == -1 {
 				effectivePatches = append(effectivePatches, p)
 			} else {
@@ -235,6 +259,9 @@ func overridePatchVulns(ctx context.Context, cl client.ResolutionClient, result 
 	// Sort the patches for deterministic output.
 	slices.SortFunc(effectivePatches, func(a, b overridePatch) int {
 		if c := a.PackageKey.Compare(b.PackageKey); c != 0 {
+			return c
+		}
+		if c := a.Type.Compare(b.Type); c != 0 {
 			return c
 		}
 
@@ -271,21 +298,25 @@ func patchManifest(patches []overridePatch, m manifest.Manifest) (manifest.Manif
 		return manifest.Manifest{}, errors.New("unsupported ecosystem")
 	}
 
-	// TODO: The overridePatch does not have an artifact's type or classifier, which is part of what uniquely identifies them.
-	// This needs to be part of the comparison & added to dependency management for it to override packages that specify them.
-
 	patched := m.Clone()
 
 	for _, p := range patches {
+		pKey := manifest.MakeRequirementKey(resolve.RequirementVersion{
+			VersionKey: resolve.VersionKey{PackageKey: p.PackageKey},
+			Type:       p.Type,
+		})
 		found := false
 		i := 0
 		for _, r := range patched.Requirements {
-			if r.PackageKey != p.PackageKey {
+			// Use RequirementKeys to check for package equality including e.g. Maven artifact type & classifier
+			rKey := manifest.MakeRequirementKey(r)
+			if rKey != pKey {
 				patched.Requirements[i] = r
 				i++
 
 				continue
 			}
+
 			origin, hasOrigin := r.Type.GetAttr(dep.MavenDependencyOrigin)
 			if !hasOrigin || origin == manifest.OriginManagement {
 				found = true
@@ -302,6 +333,7 @@ func patchManifest(patches []overridePatch, m manifest.Manifest) (manifest.Manif
 					Version:     p.NewVersion,
 					VersionType: resolve.Requirement,
 				},
+				Type: p.Type.Clone(),
 			}
 			newReq.Type.AddAttr(dep.MavenDependencyOrigin, manifest.OriginManagement)
 			patched.Requirements = append(patched.Requirements, newReq)

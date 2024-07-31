@@ -73,8 +73,33 @@ func checkRemediationResults(t *testing.T, res []resolution.ResolutionDiff) {
 		}
 	}
 
+	type minimalDepPatch struct {
+		Pkg          resolve.PackageKey
+		Type         string // from dep.Type.String()
+		OrigRequire  string
+		NewRequire   string
+		OrigResolved string
+		NewResolved  string
+	}
+
+	toMinimalDepPatches := func(dps []manifest.DependencyPatch) []minimalDepPatch {
+		t.Helper()
+		patches := make([]minimalDepPatch, len(dps))
+		for i, dp := range dps {
+			patches[i] = minimalDepPatch{
+				Pkg:          dp.Pkg,
+				Type:         dp.Type.String(),
+				OrigRequire:  dp.OrigRequire,
+				NewRequire:   dp.NewRequire,
+				OrigResolved: dp.OrigResolved,
+				NewResolved:  dp.NewResolved,
+			}
+		}
+		return patches
+	}
+
 	type minimalPatch struct {
-		Deps              []manifest.DependencyPatch
+		Deps              []minimalDepPatch
 		EcosystemSpecific any
 	}
 
@@ -87,7 +112,7 @@ func checkRemediationResults(t *testing.T, res []resolution.ResolutionDiff) {
 	minimalRes := make([]minimalDiff, len(res))
 	for i, diff := range res {
 		minimalRes[i].Patch = minimalPatch{
-			Deps:              diff.Deps,
+			Deps:              toMinimalDepPatches(diff.Deps),
 			EcosystemSpecific: diff.EcosystemSpecific,
 		}
 		minimalRes[i].AddedVulns = make([]minimalVuln, len(diff.AddedVulns))

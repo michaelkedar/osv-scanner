@@ -104,6 +104,8 @@ func GetManifestIO(pathToManifest string) (ManifestIO, error) {
 
 // A RequirementKey is a comparable type that uniquely identifies a package dependency in a manifest.
 // It does not include the version specification.
+// TODO: This would be a good type to use in many places (e.g. DependencyChain)
+// Refactor code to prefer this over PackageKey/VersionKey/Version/NodeID.
 type RequirementKey struct {
 	resolve.PackageKey
 	EcosystemSpecific any
